@@ -1,7 +1,7 @@
 package MP3::Album::Track;
 
 use strict;
-use MP3::Info;
+use MP3::Info qw(:all);
 use Data::Dumper;
 use File::Copy;
 
@@ -52,7 +52,10 @@ sub set_tag {
    $a{comment}|= '';
    $a{genre}  |= '';
 
-   my $rs = set_mp3tag($s->{filename}, $a{title}, $a{artist}, $a{album}, $a{year}, $a{comment}, $a{genre}, $a{track_number});
+   my $rs;
+   eval {
+     $rs = set_mp3tag($s->{filename}, $a{title}, $a{artist}, $a{album}, $a{year}, $a{comment}, $a{genre}, $a{track_number});
+   };
 
    $s->{info} = MP3::Info->new($s->{filename});
 

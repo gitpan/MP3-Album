@@ -2,6 +2,7 @@ package MP3::Album::Layout::Fetcher::CDDB;
 
 use strict;
 use MP3::Album::Layout;
+use CDDB;
 
 sub fetch {
 	   my $c = shift;

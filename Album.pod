@@ -19,10 +19,10 @@ MP3::Album - Perl extension to manage a music album built of mp3 files.
   }
 
   #get tracks and artistic information (layout) from cddb
-  @layouts = $mp3_album->get_layouts(method=>'CDDB');
+  @layouts = $mp3_album->fetch_layout(method=>'CDDB');
 
   #using one of the above matches to generate tags
-  $mp3_album->layout($layouts[0); # set the album layout to
+  $mp3_album->layout($layouts[0]); # set the album layout to
   				  # on of your choice
   $mp3_album->generate_tags();
 
