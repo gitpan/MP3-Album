@@ -3,6 +3,7 @@ package MP3::Album::Layout::Fetcher::CDDB;
 use strict;
 use MP3::Album::Layout;
 use CDDB;
+use Data::Dumper;
 
 sub fetch {
 	   my $c = shift;
@@ -23,19 +24,22 @@ sub fetch {
                 return undef;
            }
 
+	   return [] unless ($a{album}->{cddb_query}->{discid} && $a{album}->{cddb_query}->{frames} && $a{album}->{cddb_query}->{disctime});
+
            my @cddb_discs = $cddb->get_discs( $a{album}->{cddb_query}->{discid},
                                            $a{album}->{cddb_query}->{frames},
                                            $a{album}->{cddb_query}->{disctime}
                                          );
            foreach my $disc (@cddb_discs) {
                 my $disc_info = $cddb->get_disc_details($disc->[0], $disc->[1]);
+		last unless $disc_info;
                 my ($artist,$title) = split(/\s*\/\s*/, $disc->[2]);
                 my $layout = MP3::Album::Layout->new();
                 $layout->artist($artist);
                 $layout->title($title);
                 $layout->genre($disc->[0]);
 
-                my $k;
+                my $k = 0;
                 foreach my $t (@{$disc_info->{ttitles}}) {
                   $layout->add_track( title => $t, artist => $artist, lenght=> $disc_info->{seconds}->[$k]);
 		  $k++;

@@ -7,7 +7,7 @@ use MP3::Album::Layout::Fetcher;
 use MP3::Album::Layout;
 use File::Basename;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 sub new {
    my $c = shift;
@@ -41,7 +41,7 @@ sub rename_files {
    # %n track number
    # %p artist name
 
-   $a{format}     |= '%p - %a - %n - %t.mp3';
+   $a{format}     = '%p - %a - %n - %t.mp3' unless $a{format};
    $a{keep_copy}  |= 0;
    
    my $layout = $s->layout();
@@ -216,18 +216,6 @@ sub _album_frequencies {
   }
 
   return keys(%freqs);
-}
-
-sub _album_bitrate {
-  my $s = shift;
-
-  my %bitrates;
-  
-  foreach my $t (@{$s->{tracks}}) {
-	$bitrates{$t->bitrate()}=1 if $t->bitrate();	
-  }
-
-  return keys(%bitrates);
 }
 
 sub _album_bitrate {
